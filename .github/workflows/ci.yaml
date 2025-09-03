@@ -1,0 +1,70 @@
+name: Result Service CI
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  result-service:
+    name: Result Service CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # Install dependencies
+      - name: Install Node dependencies
+        run: npm install
+
+      # Lint
+      - name: Run ESLint check
+        run: |
+          npm install eslint eslint-plugin-security
+          npx eslint . || true
+
+      # SCA
+      - name: Run SCA (Trivy)
+        uses: aquasecurity/trivy-action@master
+        continue-on-error: true
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+
+      # SAST (ESLint security plugin)
+      - name: Run SAST (ESLint security)
+        run: |
+          npm install eslint eslint-plugin-security
+          npx eslint . || true
+
+      # Unit tests
+      - name: Run Unit Tests
+        run: npm test || true
+
+      # Docker build & push
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/result-find-your-bias:${{ github.sha }}
