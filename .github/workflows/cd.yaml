@@ -1,0 +1,23 @@
+name: Result Service CD
+
+on:
+  workflow_run:
+    workflows: ["Result Service CI"]
+    types:
+      - completed
+
+jobs:
+  cd:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.workflow_run.head_repository.full_name }}
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Deploy Result Service
+        run: |
+          kubectl set image deployment/result result=${{ secrets.DOCKER_HUB_USERNAME }}/result-find-your-bias:${{ github.event.workflow_run.head_sha }}
+          kubectl rollout status deployment/result
