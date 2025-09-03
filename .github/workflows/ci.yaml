@@ -69,3 +69,10 @@ jobs:
           context: result
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/result-find-your-bias:${{ github.sha }}
+
+      # DAST
+      - name: Run DAST (OWASP ZAP)
+        uses: zaproxy/action-full-scan@v0.10.0
+        continue-on-error: true
+        with:
+          target: "http://localhost:80"
