@@ -24,6 +24,7 @@ jobs:
       # Install dependencies
       - name: Install Node dependencies
         run: npm install
+        working-directory: result
 
       # Lint
       - name: Run ESLint check
