@@ -65,6 +65,6 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: result
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/result-find-your-bias:${{ github.sha }}
