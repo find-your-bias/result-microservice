@@ -15,7 +15,7 @@ spec:
         app: result
     spec:
       containers:
-      - image: deadvexon/result-find-your-bias:54ab199723de456bc9838194e0c71958093a7862
+      - image: deadvexon/result-find-your-bias:b5ce4e885b3c9d7df34d14783d262f05f995fd83
         imagePullPolicy: Always
         name: result
         ports:
