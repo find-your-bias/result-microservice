@@ -70,7 +70,8 @@ function collectVotesFromResult(result) {
 }
 
 app.use(cookieParser());
-app.use(express.urlencoded());
+app.use(express.json()); // Add this line to parse JSON bodies
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/views"));
 
 app.get("/", function (req, res) {
