@@ -32,18 +32,22 @@
             </tbody>
           </table>
         </div>
-        <div id="ai-analysis" ng-if="analysis">
+        <div id="ai-analysis-container" ng-if="analysis">
           <h2>AI Analysis</h2>
           <div id="chat-window">
-            <div ng-repeat="message in conversationHistory" class="chat-message {{message.role}}">
-              <p>{{message.content}}</p>
-            </div>
+              <div id="chat-messages" class="chat-messages">
+                  <div ng-repeat="message in conversationHistory" class="message-wrapper {{message.role}}">
+                      <div class="message-content">
+                          <p>{{message.content}}</p>
+                      </div>
+                  </div>
+              </div>
           </div>
-          <form id="chat-form">
-            <input type="text" ng-model="chat.userMessage" placeholder="Ask a follow-up question..." autocomplete="off"/>
-            <button type="button" ng-click="sendChatMessage()">Send</button>
+          <form id="chat-form" ng-submit="sendChatMessage()">
+              <input type="text" ng-model="chat.userMessage" placeholder="Ask a follow-up question..." autocomplete="off" required />
+              <button type="submit">Send</button>
           </form>
-        </div>
+      </div>
       </div>
     </div>
     <div id="result">
