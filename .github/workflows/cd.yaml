@@ -19,5 +19,5 @@ jobs:
 
       - name: Deploy Result Service
         run: |
-          kubectl set image deployment/result result=${{ secrets.DOCKER_HUB_USERNAME }}/result-find-your-bias:${{ github.event.workflow_run.head_sha }}
-          kubectl rollout status deployment/result
+          sudo -u ubuntu kubectl set image deployment/result result=${{ secrets.DOCKER_HUB_USERNAME }}/result-find-your-bias:${{ github.event.workflow_run.head_sha }}
+          sudo -u ubuntu kubectl rollout status deployment/result
