@@ -34,7 +34,15 @@
         </div>
         <div id="ai-analysis" ng-if="analysis">
           <h2>AI Analysis</h2>
-          <pre>{{ analysis }}</pre>
+          <div id="chat-window">
+            <div ng-repeat="message in conversationHistory" class="chat-message {{message.role}}">
+              <p>{{message.content}}</p>
+            </div>
+          </div>
+          <form id="chat-form" ng-submit="sendChatMessage()">
+            <input type="text" ng-model="userMessage" placeholder="Ask a follow-up question..." autocomplete="off"/>
+            <button type="submit">Send</button>
+          </form>
         </div>
       </div>
     </div>

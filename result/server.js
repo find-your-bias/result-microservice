@@ -88,6 +88,17 @@ app.get("/api/analyze", async (req, res) => {
   }
 });
 
+app.post("/api/chat", async (req, res) => {
+  try {
+    const aiAnalyzerService = 'http://ai-analyzer:5001/chat';
+    const response = await axios.post(aiAnalyzerService, req.body);
+    res.send(response.data);
+  } catch (error) {
+    console.error("Error calling AI analyzer chat service:", error);
+    res.status(500).send("Error calling AI analyzer chat service");
+  }
+});
+
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
