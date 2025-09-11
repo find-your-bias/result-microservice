@@ -41,7 +41,7 @@ app.controller('statsCtrl', function($scope, $http){
     var chatUrl = "result/api/chat";
     var payload = {
       question: $scope.userMessage,
-      history: $scope.conversationHistory.slice(0, -1) // Send history *before* this message
+      history: $scope.conversationHistory // Send the complete history
     };
 
     $scope.userMessage = ""; // Clear input field
