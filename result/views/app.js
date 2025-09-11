@@ -6,7 +6,7 @@ app.controller('statsCtrl', function($scope, $http){
   $scope.total = 0;
   $scope.analysis = null;
   $scope.conversationHistory = [];
-  $scope.userMessage = "";
+  $scope.chat = { userMessage: "" };
 
   var updateScores = function(){
     socket.on('scores', function (json) {
@@ -33,18 +33,18 @@ app.controller('statsCtrl', function($scope, $http){
   };
 
   $scope.sendChatMessage = function() {
-    if (!$scope.userMessage.trim()) return;
+    if (!$scope.chat.userMessage.trim()) return;
 
-    var userMsg = {role: 'user', content: $scope.userMessage};
+    var userMsg = {role: 'user', content: $scope.chat.userMessage};
     $scope.conversationHistory.push(userMsg);
 
     var chatUrl = "result/api/chat";
     var payload = {
-      question: $scope.userMessage,
-      history: $scope.conversationHistory // Send the complete history
+      question: $scope.chat.userMessage,
+      history: $scope.conversationHistory
     };
 
-    $scope.userMessage = ""; // Clear input field
+    $scope.chat.userMessage = ""; // Clear input field
 
     $http.post(chatUrl, payload).then(function(response) {
       var assistantMsg = {role: 'assistant', content: response.data.response};
