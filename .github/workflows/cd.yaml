@@ -17,7 +17,14 @@ jobs:
           repository: ${{ github.event.workflow_run.head_repository.full_name }}
           ref: ${{ github.event.workflow_run.head_sha }}
 
+
       - name: Deploy Result Service
         run: |
           sudo -u ubuntu kubectl set image deployment/result result=${{ secrets.DOCKER_HUB_USERNAME }}/result-find-your-bias:${{ github.event.workflow_run.head_sha }}
           sudo -u ubuntu kubectl rollout status deployment/result
+
+      - name: DAST (OWASP ZAP baseline)
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: https://example.com
+        continue-on-error: true
