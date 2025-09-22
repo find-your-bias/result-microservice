@@ -18,6 +18,19 @@ spec:
       - image: deadvexon/result-find-your-bias:71d0d7d08c0f066fc279e73ea6fe7538aab27a88
         imagePullPolicy: Always
         name: result
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: POSTGRES_USER
+        - name: POSTGRES_DB
+          value: "postgres"
         ports:
         - containerPort: 80
           name: result
